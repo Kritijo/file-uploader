@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/index.css" />
+    <link rel="stylesheet" href="/root.css" />
+    <title>Home</title>
+  </head>
+  <body>
+    <nav>
+      <h1><img src="icons/google-drive.svg" /> E!Drive</h1>
+      <div class="bttns">
+        <button onclick="toggleTheme()">
+          Toggle Theme <img src="icons/theme-light-dark.svg" />
+        </button>
+        <button>Log out <img src="icons/logout.svg" /></button>
+      </div>
+    </nav>
+    <%- include('partials/theme') %>
+  </body>
+</html>
