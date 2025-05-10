@@ -3,20 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/index.css" />
     <link rel="stylesheet" href="/root.css" />
+    <link rel="stylesheet" href="/index.css" />
+    <link rel="stylesheet" href="/nav.css" />
+    <link rel="stylesheet" href="/table.css" />
     <title>Home</title>
   </head>
   <body>
-    <nav>
-      <h1><img src="icons/google-drive.svg" /> E!Drive</h1>
-      <div class="bttns">
-        <button onclick="toggleTheme()">
-          Toggle Theme <img src="icons/theme-light-dark.svg" />
-        </button>
-        <button>Log out <img src="icons/logout.svg" /></button>
+    <%- include("nav.ejs") %>
+    <main>
+      <%if(user){%> <%- include("table.ejs") %> <%} else{%>
+      <div class="container">
+        <h2>Welcome to File Uploader</h2>
+        <p>
+          Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to
+          continue.
+        </p>
+        <img src="/icons/illustration.svg" alt="Google Drive" />
       </div>
-    </nav>
-    <%- include('partials/theme') %>
+      <%}%>
+    </main>
   </body>
 </html>

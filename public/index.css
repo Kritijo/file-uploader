@@ -1,50 +1,20 @@
-nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  gap: 10px;
+.greeting,
+.container {
+  margin: 2rem auto;
+  text-align: center;
 }
-
-nav {
-  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+.container h2 {
+  margin: auto 20px;
 }
-h1 {
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.container img {
+  height: 70vh;
+  width: 100vw;
 }
-h1 > img {
-  height: 2.5rem;
+.container a {
+  text-decoration: none;
+  color: var(--link);
+  font-weight: bold;
 }
-
-.bttns {
-  display: flex;
-  gap: 20px;
-}
-.bttns > button {
-  display: flex;
-  gap: 3px;
-  align-items: center;
-}
-button > img {
-  height: 1.5rem;
-}
-button {
-  border: none;
-  border-bottom: 1px solid ;
-  padding: 10px 0px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-@media (min-width: 600px) {
-  nav {
-    flex-direction: row;
-  }
-  .bttns > button {
-    font-size: large;
-  }
+.container a:hover {
+  color: var(--secondary);
 }
