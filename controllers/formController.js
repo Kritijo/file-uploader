@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
 const prisma = require("../config/prisma");
+const { upload } = require("../config/multer");
 
 exports.getSignUp = (req, res, next) => {
     res.render("signup-form", {
@@ -57,3 +58,32 @@ exports.logOut = (req, res, next) => {
 exports.getUpload = (req, res, next) => {
     res.render("upload-form");
 };
+
+exports.postUpload = [
+    upload.single("file"),
+
+    async (req, res, next) => {
+        try {
+            const { filename } = req.body;
+            const file = req.file;
+
+            if (!file) {
+                return res.status(400).send("No file uploaded.");
+            }
+            const fileSize = file.size;
+            const fileUrl = `uploads/${file.filename}`;
+
+            await prisma.file.create({
+                data: {
+                    name: filename,
+                    size: fileSize,
+                    url: fileUrl,
+                    userId: req.user.id,
+                },
+            });
+            res.redirect("/");
+        } catch (err) {
+            next(err);
+        }
+    },
+];

@@ -1,0 +1,36 @@
+.table {
+  margin: auto 1rem;
+  min-height: 70vh;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  word-wrap: break-word;
+}
+th {
+  background-color: var(--accent);
+  padding: 1rem;
+}
+th > img,
+td > img {
+  height: 1.3rem;
+  background-color: inherit;
+}
+th,
+td {
+  border-bottom: 1px solid rgba(164, 164, 164, 0.1);
+}
+td {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 600px) {
+  .table {
+    margin: 2rem 5rem;
+  }
+  td {
+    font-size: 1rem;
+  }
+}

@@ -15,5 +15,6 @@ indexRouter.post("/login", formController.postLogIn);
 indexRouter.get("/logout", formController.logOut);
 
 indexRouter.get("/upload", formController.getUpload);
+indexRouter.post("/upload", formController.postUpload);
 
 module.exports = indexRouter;

@@ -12,7 +12,7 @@
   <body>
     <%- include("nav.ejs") %>
     <main>
-      <%if(user){%> <%- include("table.ejs") %> <%} else{%>
+      <%if(user){%> <%- include("table.ejs", { files }) %> <%} else{%>
       <div class="container">
         <h2>Welcome to File Uploader</h2>
         <p>

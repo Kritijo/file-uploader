@@ -1,0 +1,28 @@
+<div class="greeting">
+  <h2>Hi <%= user.name%>!</h2>
+  <p>Upload files to your account and access them from anywhere.</p>
+</div>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Added</th>
+        <th><img src="/icons/dots-vertical.svg" /></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (files.length > 0) { files.forEach(file => { %>
+      <tr>
+        <td><%= file.name %></td>
+        <td><%= file.size %> bytes</td>
+        <td><%= new Date(file.createdAt).toLocaleDateString("en-GB") %></td>
+        <td><img src="/icons/dots-vertical.svg" /></td>
+        <% })} else { %>
+        <td colspan="4">No files uploaded yet.</td>
+      </tr>
+      <%} %>
+    </tbody>
+  </table>
+</div>
