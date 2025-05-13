@@ -16,7 +16,13 @@
       <% if (files.length > 0) { files.forEach(file => { %>
       <tr>
         <td><%= file.name %></td>
-        <td><%= file.size %> bytes</td>
+        <td>
+          <% const formatFileSize = (size) => { if (size >= 1e9) return (size /
+          1e9).toFixed(2) + " GB"; if (size >= 1e6) return (size /
+          1e6).toFixed(2) + " MB"; if (size >= 1e3) return (size /
+          1e3).toFixed(2) + " KB"; return size + " bytes"; }; %> <%=
+          formatFileSize(file.size) %>
+        </td>
         <td><%= new Date(file.createdAt).toLocaleDateString("en-GB") %></td>
         <td><img src="/icons/dots-vertical.svg" /></td>
         <% })} else { %>
