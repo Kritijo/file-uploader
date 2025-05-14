@@ -4,6 +4,7 @@ const indexRouter = Router();
 const homeController = require("../controllers/homeController");
 const formController = require("../controllers/formController");
 const signUpValidation = require("../config/signUpValidation");
+const fileController = require("../controllers/fileController");
 
 indexRouter.get("/", homeController.getHome);
 
@@ -17,6 +18,6 @@ indexRouter.get("/logout", formController.logOut);
 indexRouter.get("/upload", formController.getUpload);
 indexRouter.post("/upload", formController.postUpload);
 
-indexRouter.get("/uploads/:fileUrl", formController.viewFile);
+indexRouter.get("/uploads/:fileUrl", fileController.viewFile);
 
 module.exports = indexRouter;
