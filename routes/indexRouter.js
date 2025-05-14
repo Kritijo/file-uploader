@@ -17,4 +17,6 @@ indexRouter.get("/logout", formController.logOut);
 indexRouter.get("/upload", formController.getUpload);
 indexRouter.post("/upload", formController.postUpload);
 
+indexRouter.get("/uploads/:fileUrl", formController.viewFile);
+
 module.exports = indexRouter;

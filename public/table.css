@@ -25,6 +25,14 @@ td {
   text-align: center;
   font-size: 0.9rem;
 }
+td > a {
+  text-decoration: none;
+  color: inherit;
+}
+td > a:hover {
+  color: var(--link);
+  text-decoration: underline;
+}
 
 @media (min-width: 600px) {
   .table {

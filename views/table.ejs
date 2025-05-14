@@ -15,7 +15,9 @@
     <tbody>
       <% if (files.length > 0) { files.forEach(file => { %>
       <tr>
-        <td><%= file.name %></td>
+        <td>
+          <a href="<%= file.url %>" target="_blank"><%= file.name %></a>
+        </td>
         <td>
           <% const formatFileSize = (size) => { if (size >= 1e9) return (size /
           1e9).toFixed(2) + " GB"; if (size >= 1e6) return (size /

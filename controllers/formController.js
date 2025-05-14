@@ -3,6 +3,7 @@ const passport = require("passport");
 const { validationResult } = require("express-validator");
 const prisma = require("../config/prisma");
 const { upload } = require("../config/multer");
+const path = require("node:path");
 
 exports.getSignUp = (req, res, next) => {
     res.render("signup-form", {
@@ -87,3 +88,13 @@ exports.postUpload = [
         }
     },
 ];
+
+exports.viewFile = (req, res, next) => {
+    try {
+        const fileName = req.params.fileUrl;
+        const filePath = path.join(__dirname, "../uploads", fileName);
+        res.sendFile(filePath);
+    } catch (err) {
+        next(err);
+    }
+};
