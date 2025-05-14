@@ -19,5 +19,6 @@ indexRouter.get("/upload", formController.getUpload);
 indexRouter.post("/upload", formController.postUpload);
 
 indexRouter.get("/uploads/:fileUrl", fileController.viewFile);
+indexRouter.post("/delete/:id", fileController.deleteFile);
 
 module.exports = indexRouter;

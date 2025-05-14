@@ -1,3 +1,5 @@
+<%- include('partials/toggleDropDown') %>
+
 <div class="greeting">
   <h2>Hi <%= user.name%>!</h2>
   <p>Upload files to your account and access them from anywhere.</p>
@@ -13,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <% if (files.length > 0) { files.forEach(file => { %>
+      <% if (files.length > 0) { files.forEach((file, idx) => { %>
       <tr>
         <td>
           <a href="<%= file.url %>" target="_blank"><%= file.name %></a>
@@ -26,7 +28,22 @@
           formatFileSize(file.size) %>
         </td>
         <td><%= new Date(file.createdAt).toLocaleDateString("en-GB") %></td>
-        <td><img src="/icons/dots-vertical.svg" /></td>
+        <td class="dropdown">
+          <img src="/icons/dots-vertical.svg" onclick="dropdown(<%= idx %>)" />
+          <div class="dropdown-content">
+            <form
+              action="delete/<%= file.id %>"
+              method="POST"
+              onsubmit="return confirm ('Are you sure you want to delete <%= file.name %>')"
+            >
+              <button type="submit">Delete</button>
+            </form>
+            <hr />
+            <a href="<%= file.url %>" download>
+              <button>Download</button>
+            </a>
+          </div>
+        </td>
         <% })} else { %>
         <td colspan="4">No files uploaded yet.</td>
       </tr>
