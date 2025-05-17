@@ -1,12 +1,11 @@
 <% folders.forEach((folder, idx)=>{ %>
 <tr>
   <td>
-    <a href="/folder/<%= folder.id %>"><%= folder.name %></a>
+    <a href="/folder/<%= folder.id %>">📁 <%= folder.name %></a>
   </td>
   <td>—</td>
-  <td><%= new Date(folder.createdAt).toLocaleDateString("en-GB") %></td>
   <td class="dropdown">
-    <img src="/icons/dots-vertical.svg" onclick="dropdown(<%= idx %>)" />
+    <img src="/icons/dots-horizontal.svg" onclick="dropdown(<%= idx %>)" />
     <div class="dropdown-content">
       <form
         action="delete-folder/<%= folder.id %>"

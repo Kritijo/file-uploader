@@ -1,5 +1,4 @@
 .table {
-  margin: auto 1rem;
   min-height: 70vh;
 }
 table {
@@ -11,26 +10,26 @@ tr:hover {
   background-color: #a4a4a41a;
 }
 th {
-  background-color: var(--accent);
-  padding: 1rem;
+  background-color: #b38da3;
+  padding: 0.7rem 1rem;
 }
-th:nth-child(1) {
+th:first-child {
   text-align: left;
   width: 50%;
 }
-td:nth-child(1) {
+td:first-child {
   text-align: left;
 }
-th:nth-child(4) {
+th:last-child {
   text-align: right;
   width: 10px;
 }
-td:nth-child(4) {
+td:last-child {
   text-align: right;
 }
 th > img,
 td > img {
-  height: 1.3rem;
+  width: 1.5rem;
   background-color: inherit;
 }
 th,
@@ -38,7 +37,7 @@ td {
   border-bottom: 1px solid #a4a4a41a;
 }
 td {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   text-align: center;
   font-size: 0.9rem;
 }
@@ -88,11 +87,19 @@ button:hover {
   background-color: var(--secondary);
 }
 
+.empty {
+  height: 30vh;
+  width: 100%;
+}
+
 @media (min-width: 600px) {
   .table {
     margin: 2rem 5rem;
   }
   td {
     font-size: 1rem;
+  }
+  .empty {
+    height: 50vh;
   }
 }

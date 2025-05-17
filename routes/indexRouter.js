@@ -25,4 +25,6 @@ indexRouter.post("/delete-file/:id", fileController.deleteFile);
 indexRouter.get("/upload-folder", folderController.getFolderUpload);
 indexRouter.post("/upload-folder", folderController.postFolderUpload);
 
+indexRouter.get("/folder/:folderId", folderController.viewFolder);
+
 module.exports = indexRouter;

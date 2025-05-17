@@ -37,4 +37,38 @@ exports.postFolderUpload = async (req, res, next) => {
     }
 };
 
+exports.viewFolder = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.redirect("/login");
+        }
+
+        const folderId = parseInt(req.params.folderId);
+
+        const folder = await prisma.folder.findUnique({
+            where: {
+                id: folderId,
+            },
+            select: {
+                name: true,
+            },
+        });
+
+        const files = await prisma.file.findMany({
+            where: {
+                userId: req.user.id,
+                id: folderId,
+            },
+        });
+
+        res.render("index", {
+            folders: [],
+            folderName: folder.name,
+            files,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 exports.deleteFolder = (req, res, next) => {};

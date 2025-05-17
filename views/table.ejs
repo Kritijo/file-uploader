@@ -3,10 +3,10 @@
 <div class="greeting">
   <% if(!folderName) { %>
   <h2>Hi <%= user.name%>!</h2>
-  <% } else {%>
-  <h2><%= folderName %></h2>
-  <% } %>
   <p>Upload files to your account and access them from anywhere.</p>
+  <% } else {%>
+  <h2>📂 <%= folderName %></h2>
+  <% } %>
 </div>
 <div class="table">
   <table>
@@ -14,14 +14,16 @@
       <tr>
         <th>Name</th>
         <th>Size</th>
-        <th>Added</th>
-        <th><img src="/icons/dots-vertical.svg" /></th>
+        <th><img src="/icons/dots-horizontal.svg" /></th>
       </tr>
     </thead>
     <tbody>
       <% if (files.length === 0 && folders.length === 0) { %>
        <tr>
-        <td colspan="4">No files uploaded yet.</td>
+        <td colspan="4" style="text-align:center;">
+          <img src="/icons/empty.svg" class="empty"/>
+          <p style="font-weight:600;">No files uploaded yet.</p>
+        </td>
       </tr>
       <% } %>
       <% if (folders.length > 0) { %> <%- include('folders', { folders: folders
