@@ -1,0 +1,25 @@
+<% folders.forEach((folder, idx)=>{ %>
+<tr>
+  <td>
+    <a href="/folder/<%= folder.id %>"><%= folder.name %></a>
+  </td>
+  <td>—</td>
+  <td><%= new Date(folder.createdAt).toLocaleDateString("en-GB") %></td>
+  <td class="dropdown">
+    <img src="/icons/dots-vertical.svg" onclick="dropdown(<%= idx %>)" />
+    <div class="dropdown-content">
+      <form
+        action="delete-folder/<%= folder.id %>"
+        method="POST"
+        onsubmit="return confirm ('Are you sure you want to delete <%= folder.name %>')"
+      >
+        <button type="submit">Delete</button>
+      </form>
+      <hr />
+      <a href="/folder/<%= folder.id %>" download>
+        <button>Edit</button>
+      </a>
+    </div>
+  </td>
+</tr>
+<% }) %>

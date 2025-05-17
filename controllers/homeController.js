@@ -8,7 +8,12 @@ exports.getHome = async (req, res, next) => {
                     userId: req.user.id,
                 },
             });
-            return res.render("index", { files });
+            const folders = await prisma.folder.findMany({
+                where: {
+                    userId: req.user.id,
+                },
+            });
+            return res.render("index", { folders, folderName: "", files });
         }
         res.render("index");
     } catch (err) {
