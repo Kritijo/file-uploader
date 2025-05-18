@@ -8,7 +8,7 @@
     <title>Upload File</title>
   </head>
   <body>
-    <form action="/folder/<%= folderId %>/upload-file" method="POST" enctype="multipart/form-data">
+    <form <% if(folderId){ %> action="/folder/<%= folderId %>/upload-file" <% } else{action="/upload-file"} %> method="POST" enctype="multipart/form-data">
       <h1>Upload Your File</h1>
       <label for="filename">File name:</label>
       <input type="text" id="filename" name="filename" required />

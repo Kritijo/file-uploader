@@ -64,7 +64,7 @@ exports.viewFolder = async (req, res, next) => {
         const files = await prisma.file.findMany({
             where: {
                 userId: req.user.id,
-                id: folderId,
+                folderId: folderId,
             },
         });
 
