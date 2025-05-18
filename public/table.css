@@ -39,7 +39,6 @@ td {
 td {
   padding: 0.5rem 1rem;
   text-align: center;
-  font-size: 0.9rem;
 }
 td > a {
   text-decoration: none;
@@ -95,9 +94,6 @@ button:hover {
 @media (min-width: 600px) {
   .table {
     margin: 2rem 5rem;
-  }
-  td {
-    font-size: 1rem;
   }
   .empty {
     height: 50vh;
