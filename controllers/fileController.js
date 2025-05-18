@@ -6,7 +6,9 @@ exports.getFileUpload = (req, res, next) => {
     if (!req.user) {
         return res.redirect("/login");
     }
-    res.render("upload-file");
+    const folderId = req.params.folderId;
+
+    res.render("upload-file", { folderId });
 };
 
 exports.postFileUpload = [
@@ -16,6 +18,8 @@ exports.postFileUpload = [
         try {
             const { filename } = req.body;
             const file = req.file;
+            const folderIdParam = req.params.folderId;
+            const folderId = folderIdParam ? parseInt(folderIdParam) : null;
 
             if (!file) {
                 return res.status(400).send("No file uploaded.");
@@ -29,6 +33,7 @@ exports.postFileUpload = [
                     size: fileSize,
                     url: fileUrl,
                     userId: req.user.id,
+                    folderId,
                 },
             });
             res.redirect("/");

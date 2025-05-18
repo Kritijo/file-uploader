@@ -4,18 +4,23 @@ exports.getFolderUpload = (req, res) => {
     if (!req.user) {
         return res.redirect("/login");
     }
-    res.render("upload-folder");
+    const folderId = req.params.folderId;
+    res.render("upload-folder", { folderId });
 };
 
 exports.postFolderUpload = async (req, res, next) => {
     try {
+        const folderIdParam = req.params.folderId;
+        const folderId = folderIdParam ? parseInt(folderIdParam) : null;
         const userId = req.user.id;
+
         const folderName = req.body.foldername;
 
         const existingFolder = await prisma.folder.findFirst({
             where: {
                 name: folderName,
                 userId: userId,
+                parentId: folderId,
             },
         });
 
@@ -29,6 +34,7 @@ exports.postFolderUpload = async (req, res, next) => {
             data: {
                 name: folderName,
                 userId: userId,
+                parentId: folderId,
             },
         });
         res.redirect("/");
@@ -50,6 +56,7 @@ exports.viewFolder = async (req, res, next) => {
                 id: folderId,
             },
             select: {
+                id: true,
                 name: true,
             },
         });
@@ -61,8 +68,16 @@ exports.viewFolder = async (req, res, next) => {
             },
         });
 
+        const folders = await prisma.folder.findMany({
+            where: {
+                userId: req.user.id,
+                parentId: folderId,
+            },
+        });
+
         res.render("index", {
-            folders: [],
+            folders,
+            folderId: folder.id,
             folderName: folder.name,
             files,
         });

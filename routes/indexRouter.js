@@ -12,5 +12,5 @@ const folderRouter = require("./folderRoute");
 indexRouter.use("/", authRouter);
 indexRouter.use("/", fileRouter);
 indexRouter.use("/", folderRouter);
-
+    
 module.exports = indexRouter;

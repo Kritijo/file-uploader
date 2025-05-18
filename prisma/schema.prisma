@@ -35,6 +35,7 @@ model Folder{
   name      String   
 
   userId    Int
+  parentId  Int?
   user      User     @relation(fields: [userId], references: [id])
 
   files     File[]

@@ -10,14 +10,14 @@
 <% files.forEach((file, idx) => { %>
 <tr>
   <td>
-    <a href="<%= file.url %>" target="_blank">📄 <%= file.name %></a>
+    <a href="/<%= file.url %>" target="_blank">📄 <%= file.name %></a>
   </td>
   <td><%= formatFileSize(file.size) %></td>
   <td class="dropdown">
     <img src="/icons/dots-horizontal.svg" onclick="dropdown(<%= index+idx %>)" />
     <div class="dropdown-content">
       <form
-        action="delete-file/<%= file.id %>"
+        action="/delete-file/<%= file.id %>"
         method="POST"
         onsubmit="return confirm ('Are you sure you want to delete <%= file.name %>')"
       >
