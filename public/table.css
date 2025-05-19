@@ -4,7 +4,6 @@
 table {
   border-collapse: collapse;
   width: 100%;
-  word-wrap: break-word;
 }
 tr:hover {
   background-color: #a4a4a41a;
@@ -19,6 +18,10 @@ th:first-child {
 }
 td:first-child {
   text-align: left;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 th:last-child {
   text-align: right;
@@ -97,5 +100,8 @@ button:hover {
   }
   .empty {
     height: 50vh;
+  }
+  .td:first-child {
+    max-width: 180px;
   }
 }

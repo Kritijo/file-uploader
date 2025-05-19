@@ -16,7 +16,7 @@ exports.postFileUpload = [
 
     async (req, res, next) => {
         try {
-            const { filename } = req.body;
+            const filename = req.file.originalname;
             const file = req.file;
             const folderIdParam = req.params.folderId;
             const folderId = folderIdParam ? parseInt(folderIdParam) : null;
