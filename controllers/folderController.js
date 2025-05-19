@@ -5,7 +5,7 @@ exports.getFolderUpload = (req, res) => {
         return res.redirect("/login");
     }
     const folderId = req.params.folderId;
-    res.render("upload-folder", { folderId });
+    res.render("upload-folder", { folderId, folderName: "" });
 };
 
 exports.postFolderUpload = async (req, res, next) => {
@@ -86,4 +86,57 @@ exports.viewFolder = async (req, res, next) => {
     }
 };
 
-exports.deleteFolder = (req, res, next) => {};
+exports.getEditFolder = async (req, res, next) => {
+    try {
+        const folderId = parseInt(req.params.folderId);
+        const folder = await prisma.folder.findUnique({
+            where: {
+                id: folderId,
+            },
+            select: {
+                name: true,
+            },
+        });
+        res.render("upload-folder", {
+            folderId,
+            folderName: folder.name,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.postEditFolder = async (req, res, next) => {
+    try {
+        const folderId = parseInt(req.params.folderId);
+        const folderName = req.body.foldername;
+
+        await prisma.folder.update({
+            where: {
+                id: folderId,
+            },
+            data: {
+                name: folderName,
+            },
+        });
+        res.redirect("/");
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.deleteFolder = async (req, res, next) => {
+    // try {
+    //     const folderId = parseInt(req.params.folderId);
+    //     const userId = req.user.id;
+    //     await prisma.folder.deleteMany({
+    //         where: {
+    //             userId: userId,
+    //             id: folderId,
+    //             parentId: folderId,
+    //         },
+    //     });
+    // } catch (err) {
+    //     next(err);
+    // }
+};

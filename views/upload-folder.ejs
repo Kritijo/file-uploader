@@ -8,12 +8,13 @@
     <title>Upload Folder</title>
   </head>
   <body>
-    <form 
-    <% if(folderId){ %> action="/folder/<%= folderId %>/upload-folder" 
+    <form
+    <% if(folderName){ %> action="/folder/<%= folderId %>/update"
+    <% } else if(folderId){ %> action="/folder/<%= folderId %>/upload-folder"
     <% } else{action="/upload-folder"} %> method="POST">
       <h1>Upload Your Folder</h1>
       <label for="foldername">Folder name:</label>
-      <input type="text" id="foldername" name="foldername" required />
+      <input type="text" id="foldername" name="foldername" <% if(folderName)%>value="<%= folderName%>" required />
       <button type="submit">Upload</button>
     </form>
   </body>
