@@ -141,6 +141,8 @@ const getAllDescendantFolderIds = async (folderId) => {
 };
 
 const deleteFilesInFolders = async (folderIds, userId) => {
+    const supabase = require("../config/supabase");
+
     const files = await prisma.file.findMany({
         where: {
             folderId: { in: folderIds },
@@ -148,19 +150,18 @@ const deleteFilesInFolders = async (folderIds, userId) => {
         },
         select: { url: true },
     });
-    console.log(
-        "Would delete:",
-        files.map((f) => f.url)
-    );
 
-    const fs = require("fs/promises");
-    await Promise.all(
-        files.map((file) =>
-            fs.unlink(file.url).catch((err) => {
-                console.warn(`Failed to delete ${file.url}: ${err.message}`);
-            })
-        )
-    );
+    const pathsToDelete = files.map((file) => file.url).filter(Boolean);
+
+    if (pathsToDelete.length > 0) {
+        const { error } = await supabase.storage
+            .from("uploads")
+            .remove(pathsToDelete);
+
+        if (error) {
+            console.warn("Supabase deletion error:", error.message);
+        }
+    }
 };
 
 exports.deleteFolder = async (req, res, next) => {

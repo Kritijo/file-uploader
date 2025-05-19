@@ -1,6 +1,5 @@
-const fs = require("fs/promises");
-const path = require("node:path");
 const prisma = require("../config/prisma");
+const supabase = require("../config/supabase");
 const { upload } = require("../config/multer");
 
 exports.getFileUpload = (req, res, next) => {
@@ -17,7 +16,6 @@ exports.postFileUpload = [
 
     async (req, res, next) => {
         try {
-            const filename = req.file.originalname;
             const file = req.file;
             const folderIdParam = req.params.folderId;
             const folderId = folderIdParam ? parseInt(folderIdParam) : null;
@@ -25,16 +23,26 @@ exports.postFileUpload = [
             if (!file) {
                 return res.status(400).send("No file uploaded.");
             }
-            const fileSize = file.size;
-            const fileUrl = `uploads/${file.filename}`;
+
+            const supabasePath = `user_${req.user.id}/${Date.now()}_${
+                file.originalname
+            }`;
+
+            const { data, error } = await supabase.storage
+                .from("uploads")
+                .upload(supabasePath, file.buffer, {
+                    contentType: file.mimetype,
+                });
+
+            if (error) return next(error);
 
             await prisma.file.create({
                 data: {
-                    name: filename,
-                    size: fileSize,
-                    url: fileUrl,
+                    name: file.originalname,
+                    size: file.size,
+                    url: supabasePath,
                     userId: req.user.id,
-                    folderId,
+                    folderId: folderId,
                 },
             });
             res.redirect("/");
@@ -45,15 +53,17 @@ exports.postFileUpload = [
 ];
 
 exports.viewFile = async (req, res, next) => {
-    try {
-        const filePath = path.join(__dirname, "..", req.path);
-        await fs.access(filePath);
-        res.sendFile(filePath);
-    } catch {
-        const error = new Error("File not found.");
-        error.status = 404;
-        return next(error);
-    }
+    const file = await prisma.file.findUnique({
+        where: { id: parseInt(req.params.id), userId: req.user.id },
+    });
+
+    const { data, error } = await supabase.storage
+        .from("uploads")
+        .createSignedUrl(file.url, 60 * 5);
+
+    if (error) return next(error);
+
+    res.redirect(data.signedUrl);
 };
 
 exports.deleteFile = async (req, res, next) => {
@@ -75,7 +85,7 @@ exports.deleteFile = async (req, res, next) => {
             },
         });
 
-        await fs.unlink(fileRecord.url);
+        await supabase.storage.from("uploads").remove([fileRecord.url]);
 
         res.redirect("/");
     } catch (err) {
