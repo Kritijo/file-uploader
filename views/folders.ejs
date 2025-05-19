@@ -8,7 +8,7 @@
     <img src="/icons/dots-horizontal.svg" onclick="dropdown(<%= idx %>)" />
     <div class="dropdown-content">
       <form
-        action="delete-folder/<%= folder.id %>"
+        action="/delete-folder/<%= folder.id %>"
         method="POST"
         onsubmit="return confirm ('Are you sure you want to delete <%= folder.name %>')"
       >

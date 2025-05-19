@@ -17,7 +17,7 @@ folderRouter.post(
     folderController.postFolderUpload
 );
 
-folderRouter.post("delete-folder/:folderId", folderController.deleteFolder);
+folderRouter.post("/delete-folder/:folderId", folderController.deleteFolder);
 
 folderRouter.get("/folder/:folderId/update", folderController.getEditFolder);
 folderRouter.post("/folder/:folderId/update", folderController.postEditFolder);

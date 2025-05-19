@@ -126,18 +126,60 @@ exports.postEditFolder = async (req, res, next) => {
     }
 };
 
+const getAllDescendantFolderIds = async (folderId) => {
+    const results = await prisma.$queryRaw`
+        WITH RECURSIVE subfolders AS (
+            SELECT id FROM "Folder" WHERE id = ${folderId}
+            UNION ALL
+            SELECT f.id FROM "Folder" f
+            INNER JOIN subfolders sf ON f."parentId" = sf.id
+        )
+        SELECT id FROM subfolders;
+    `;
+
+    return results.map((row) => row.id);
+};
+
+const deleteFilesInFolders = async (folderIds, userId) => {
+    const files = await prisma.file.findMany({
+        where: {
+            folderId: { in: folderIds },
+            userId: userId,
+        },
+        select: { url: true },
+    });
+    console.log(
+        "Would delete:",
+        files.map((f) => f.url)
+    );
+
+    const fs = require("fs/promises");
+    await Promise.all(
+        files.map((file) =>
+            fs.unlink(file.url).catch((err) => {
+                console.warn(`Failed to delete ${file.url}: ${err.message}`);
+            })
+        )
+    );
+};
+
 exports.deleteFolder = async (req, res, next) => {
-    // try {
-    //     const folderId = parseInt(req.params.folderId);
-    //     const userId = req.user.id;
-    //     await prisma.folder.deleteMany({
-    //         where: {
-    //             userId: userId,
-    //             id: folderId,
-    //             parentId: folderId,
-    //         },
-    //     });
-    // } catch (err) {
-    //     next(err);
-    // }
+    try {
+        const folderId = parseInt(req.params.folderId);
+        const userId = req.user.id;
+
+        const folderIds = await getAllDescendantFolderIds(folderId);
+
+        await deleteFilesInFolders(folderIds, userId);
+
+        await prisma.folder.deleteMany({
+            where: {
+                id: { in: folderIds },
+                userId: userId,
+            },
+        });
+        res.redirect("/");
+    } catch (err) {
+        next(err);
+    }
 };

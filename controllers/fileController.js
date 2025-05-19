@@ -1,3 +1,4 @@
+const fs = require("fs/promises");
 const path = require("node:path");
 const prisma = require("../config/prisma");
 const { upload } = require("../config/multer");
@@ -43,12 +44,15 @@ exports.postFileUpload = [
     },
 ];
 
-exports.viewFile = (req, res, next) => {
+exports.viewFile = async (req, res, next) => {
     try {
         const filePath = path.join(__dirname, "..", req.path);
+        await fs.access(filePath);
         res.sendFile(filePath);
-    } catch (err) {
-        next(err);
+    } catch {
+        const error = new Error("File not found.");
+        error.status = 404;
+        return next(error);
     }
 };
 
@@ -57,15 +61,20 @@ exports.deleteFile = async (req, res, next) => {
         const fileid = parseInt(req.params.id);
 
         const fileRecord = await prisma.file.findUnique({
-            where: { id: fileid },
+            where: {
+                userId: req.user.id,
+                id: fileid,
+            },
             select: { url: true },
         });
 
         await prisma.file.delete({
-            where: { id: fileid },
+            where: {
+                userId: req.user.id,
+                id: fileid,
+            },
         });
 
-        const fs = require("fs/promises");
         await fs.unlink(fileRecord.url);
 
         res.redirect("/");
