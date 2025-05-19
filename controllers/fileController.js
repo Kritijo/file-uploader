@@ -92,3 +92,39 @@ exports.deleteFile = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.downloadFile = async (req, res, next) => {
+    const axios = require("axios");
+
+    try {
+        const file = await prisma.file.findUnique({
+            where: { id: parseInt(req.params.id), userId: req.user.id },
+        });
+        if (!file) {
+            const error = new Error("File not found.");
+            error.status = 404;
+            return next(error);
+        }
+
+        const { data, error } = await supabase.storage
+            .from("uploads")
+            .createSignedUrl(file.url, 60);
+
+        if (error) return next(error);
+        
+        const fileStream = await axios({
+            method: "GET",
+            url: data.signedUrl,
+            responseType: "stream",
+        });
+
+        res.setHeader(
+            "Content-Disposition",
+            `attachment; filename="${file.name}"`
+        );
+
+        fileStream.data.pipe(res);
+    } catch (err) {
+        next(err);
+    }
+};

@@ -8,6 +8,8 @@ fileRouter.post("/upload-file", fileController.postFileUpload);
 fileRouter.get("/files/:id", fileController.viewFile);
 fileRouter.post("/delete-file/:id", fileController.deleteFile);
 
+fileRouter.get("/download/:id", fileController.downloadFile);
+
 fileRouter.get("/folder/:folderId/upload-file", fileController.getFileUpload);
 fileRouter.post("/folder/:folderId/upload-file", fileController.postFileUpload);
 
