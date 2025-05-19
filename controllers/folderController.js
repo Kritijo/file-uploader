@@ -5,7 +5,7 @@ exports.getFolderUpload = (req, res) => {
         return res.redirect("/login");
     }
     const folderId = req.params.folderId;
-    res.render("upload-folder", { folderId, folderName: "" });
+    res.render("upload-folder", { folderId, folderName: "", edit: false });
 };
 
 exports.postFolderUpload = async (req, res, next) => {
@@ -100,6 +100,7 @@ exports.getEditFolder = async (req, res, next) => {
         res.render("upload-folder", {
             folderId,
             folderName: folder.name,
+            edit: true,
         });
     } catch (err) {
         next(err);
