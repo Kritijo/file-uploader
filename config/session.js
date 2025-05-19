@@ -1,6 +1,7 @@
 const expressSession = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const prisma = require("./prisma");
+const cron = require("node-cron");
 
 const session = expressSession({
     cookie: {
@@ -10,10 +11,24 @@ const session = expressSession({
     resave: false,
     saveUninitialized: false,
     store: new PrismaSessionStore(prisma, {
-        checkPeriod: 2 * 60 * 1000,
+        checkPeriod: 60 * 60 * 1000,
         dbRecordIdIsSessionId: true,
         dbRecordIdFunction: undefined,
     }),
+});
+
+cron.schedule("0 0 * * *", async () => {
+    try {
+        await prisma.session.deleteMany({
+            where: {
+                expiresAt: {
+                    lt: new Date(),
+                },
+            },
+        });
+    } catch (err) {
+        console.error("Session cleanup failed:", err);
+    }
 });
 
 module.exports = session;
